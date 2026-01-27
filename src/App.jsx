@@ -15,6 +15,7 @@ import Leaderboard from './Admin/Leaderboard.jsx';
 import AddUser from './admin/AddUser.jsx'
 import { ToastContainer, Bounce } from 'react-toastify'
 import Quizes from './admin/Quizes.jsx'
+import Register from './Components/Register.jsx'
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
 
         <Route path='/admin_dash' element={<AdminDash />} >
           <Route index element={<AdminHome></AdminHome>} ></Route>

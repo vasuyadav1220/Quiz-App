@@ -8,38 +8,9 @@ export default function Quizes() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    let [addQuiz, setaddQuiz] = useState({ quizName: '' })
 
-    let submithandler = async (e) => {
-        e.preventDefault();
 
-        try {
-            await addDoc(collection(db, "quizType"), {
-                quizName: addQuiz.quizName,
-            });
-            console.log("Quiz added");
-            toast.success('Quiz added', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            });
-            setaddQuiz({ quizName: '' });
-        } catch (e) {
-            console.error("Error adding document", e);
-        }
-    };
-
-    let inputHandler = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-
-    const getUsers = async (e) => {
+    const getQuizes = async (e) => {
         setLoading(true)
 
         try {
@@ -76,11 +47,11 @@ export default function Quizes() {
             theme: "dark",
             transition: Bounce,
         });
-        getUsers()
+        getQuizes()
     }
 
     useEffect(() => {
-        getUsers()
+        getQuizes()
     }, [])
 
     return (

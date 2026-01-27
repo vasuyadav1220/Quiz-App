@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { collection, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.config.js';
 import { Bounce, toast } from 'react-toastify';
@@ -169,6 +169,10 @@ export default function Login() {
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
+
+          <div>
+            <NavLink to={'/register'} >Register</NavLink>
+          </div>
         </form>
 
       </div>

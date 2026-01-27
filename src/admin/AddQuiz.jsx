@@ -1,6 +1,6 @@
 import React, { useEffect, useEffectEvent, useState } from 'react';
 import { db } from '../firebase.config';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { log } from 'firebase/firestore/pipelines';
 import { Bounce, toast } from 'react-toastify';
 
@@ -31,6 +31,39 @@ export default function AddQuiz() {
 
     // }
 
+    let [addQuizType, setaddQuiz] = useState({ quizName: '' })
+    const [GetQuizType, setGetQuizType] = useState([]);
+
+
+    let submitQuizType = async (e) => {
+        e.preventDefault();
+
+        try {
+            await addDoc(collection(db, "quizType"), {
+                quizName: addQuizType.quizName,
+            });
+            console.log("Quiz type added");
+            toast.success('Quiz added', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+            setaddQuiz({ quizName: '' });
+        } catch (e) {
+            console.error("Error adding document", e);
+        }
+    };
+
+    let inputHandler = (e) => {
+        setaddQuiz({ ...addQuizType, [e.target.name]: e.target.value })
+    }
+
     const handleOptionChange = (index, value) => {
         let updated = [...options];
         updated[index] = value;
@@ -45,7 +78,6 @@ export default function AddQuiz() {
         let updated = options.filter((_, i) => i !== index);
         setOptions(updated);
     };
-
 
     let submithandler = async (e) => {
         e.preventDefault();
@@ -89,6 +121,29 @@ export default function AddQuiz() {
         setCorrect("");
     };
 
+    const getQuizes = async (e) => {
+        // setLoading(true)
+
+        try {
+            const querySnapShot = await getDocs(collection(db, "quizType"))
+            let quizData = [];
+
+            querySnapShot.forEach((doc) => {
+                quizData.push({ id: doc.id, data: doc.data() })
+            })
+            setGetQuizType([...quizData])
+        } catch (error) {
+            console.error(error);
+
+        } finally {
+            // setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        getQuizes()
+    }, [])
+
 
     // useEffect(() => {
     //     localStorage.setItem("allQuizes", JSON.stringify(formdata))
@@ -101,7 +156,7 @@ export default function AddQuiz() {
                 <h2>Add Quiz</h2>
 
                 <div>
-                    <button type="button" class="btn btn-primary border-0 rounded-5" style={{ background: '#30364F' }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-primary border-0 rounded-2" style={{ background: '#30364F' }} data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i class="fa-solid fa-plus"></i>
                     </button>
 
@@ -113,12 +168,19 @@ export default function AddQuiz() {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <form onSubmit={submitQuizType} >
+                                        <div className="mb-3">
+                                            <label htmlFor="name" className="form-label">Name</label>
+                                            <input type="text" className="form-control" placeholder='Enter quiz name' name='quizName' value={addQuizType.quizName} onChange={inputHandler} />
+                                        </div>
 
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" className="btn btn-primary border-0 shadow" style={{ background: '#30364F' }}>Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -134,7 +196,17 @@ export default function AddQuiz() {
             <form onSubmit={submithandler} className='w-75 m-auto p-5 text-dark border rounded-4 shadow' style={{ background: '#ACBAC4' }}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
-                    <input type="text" className="form-control" placeholder='Enter quiz name' name='name' value={inp} onChange={(e) => { setinp(e.target.value) }} />
+                    {/* <input type="text" className="form-control" placeholder='Enter quiz name' name='name' value={inp} onChange={(e) => { setinp(e.target.value) }} /> */}
+                    <select name='name' className="form-select" value={inp} onChange={(e) => { setinp(e.target.value) }}>
+                        <option value="" hidden selected>Select type</option>
+                        {
+                            GetQuizType?.map((u, i) => {
+                                return (
+                                    <option value={u.quizName}> {u.data.quizName} </option>
+                                )
+                            })
+                        }
+                    </select>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Quiz Question</label>
