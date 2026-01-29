@@ -16,6 +16,9 @@ import AddUser from './admin/AddUser.jsx'
 import { ToastContainer, Bounce } from 'react-toastify'
 import Quizes from './admin/Quizes.jsx'
 import Register from './Components/Register.jsx'
+import UserDash from './user/UserDash.jsx'
+import UserHome from './user/UserHome.jsx'
+import Quiz from './user/Quiz.jsx'
 
 function App() {
 
@@ -48,6 +51,10 @@ function App() {
           <Route path='add_user' element={<AddUser></AddUser>} ></Route>
           <Route path='all_quizes' element={<Quizes></Quizes>} ></Route>
         </Route>
+
+        <Route path='/user_dash' element={<UserDash></UserDash>} ></Route>
+        <Route path='/user_home' element={<UserHome></UserHome>} ></Route>
+        <Route path="/quiz/:quizName" element={<Quiz />} />
 
       </Routes>
     </BrowserRouter>

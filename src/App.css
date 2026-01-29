@@ -1,3 +1,16 @@
-.btn{
-    
+.quiz_bg{
+background: url('https://static.vecteezy.com/system/resources/previews/023/867/729/non_2x/question-mark-copy-space-background-yellow-quiz-banner-template-vector.jpg');
+
+}
+
+.radio_div{
+        display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.options{
+        padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 10px;
 }

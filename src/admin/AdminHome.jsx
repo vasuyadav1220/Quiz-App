@@ -24,7 +24,7 @@ export default function AdminHome() {
         userData.push({ id: doc.id, data: doc.data() })
       })
 
-      setQuizes([...userData])
+      setUSers([...userData])
     } catch (error) {
       console.error(error);
 
@@ -45,7 +45,7 @@ export default function AdminHome() {
         userData.push({ id: doc.id, data: doc.data() })
       })
 
-      setUSers([...userData])
+      setQuizes([...userData])
     } catch (error) {
       console.error(error);
 

@@ -109,7 +109,7 @@ export default function Login() {
         if (user.role === "admin") {
           nav("/admin_dash");
         } else if (user.role === "user") {
-          nav("/user_dash");
+          nav("/user_home");
         }
 
       } else {
